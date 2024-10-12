@@ -23,12 +23,7 @@
 //
 package org.incendo.disruptor;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Function;
 import org.apiguardian.api.API;
 import org.incendo.disruptor.disruption.Disruption;
 import org.incendo.disruptor.trigger.DisruptionTrigger;
@@ -41,8 +36,8 @@ public interface DisruptionConfig {
      *
      * @return the builder
      */
-    static Builder builder() {
-        return new Builder();
+    static DisruptionConfigBuilder builder() {
+        return new DisruptionConfigBuilder();
     }
 
     /**
@@ -65,96 +60,4 @@ public interface DisruptionConfig {
      * @return the mode
      */
     DisruptionMode mode();
-
-    @API(status = API.Status.STABLE, since = "1.0.0")
-    final class Builder {
-
-        private final List<Disruption> disruptions = new ArrayList<>();
-        private DisruptionTrigger trigger = DisruptionTrigger.never();
-        private DisruptionMode mode = DisruptionMode.BEFORE;
-
-        private Builder() {
-        }
-
-        /**
-         * Sets the trigger.
-         *
-         * @param trigger new trigger
-         * @return {@code this}
-         */
-        public Builder trigger(final DisruptionTrigger trigger) {
-            this.trigger = Objects.requireNonNull(trigger, "trigger");
-            return this;
-        }
-
-        /**
-         * Adds the given {@code disruptions}.
-         *
-         * @param disruptions disruptions to add
-         * @return {@code this}
-         */
-        public Builder disruptions(final Disruption... disruptions) {
-            Objects.requireNonNull(disruptions, "disruptions");
-            for (final Disruption disruption : disruptions) {
-                Objects.requireNonNull(disruption, "disruption");
-            }
-            this.disruptions.addAll(Arrays.asList(disruptions));
-            return this;
-        }
-
-        /**
-         * Adds the given {@code disruptions}.
-         *
-         * @param disruptions disruptions to add
-         * @return {@code this}
-         */
-        public Builder disruptions(final List<Disruption> disruptions) {
-            Objects.requireNonNull(disruptions, "disruptions");
-            for (final Disruption disruption : disruptions) {
-                Objects.requireNonNull(disruption, "disruption");
-            }
-            this.disruptions.addAll(disruptions);
-            return this;
-        }
-
-        /**
-         * Adds a {@link Disruption#delaying(Duration)} disruption.
-         *
-         * @param duration duration to delay for
-         * @return {@code this}
-         */
-        public Builder delay(final Duration duration) {
-            return this.disruptions(Disruption.delaying(duration));
-        }
-
-        /**
-         * Adds a {@link Disruption#throwing(Function)} disruption.
-         *
-         * @param generator throwable generator
-         * @return {@code this}
-         */
-        public Builder throwException(final Function<DisruptorContext, Throwable> generator) {
-            return this.disruptions(Disruption.throwing(generator));
-        }
-
-        /**
-         * Sets the disruption mode to the given {@code mode}.
-         *
-         * @param mode new mode
-         * @return {@code this}
-         */
-        public Builder mode(final DisruptionMode mode) {
-            this.mode = Objects.requireNonNull(mode, "mode");
-            return this;
-        }
-
-        /**
-         * Build a new {@link DisruptionConfig} instance using {@code this} builder.
-         *
-         * @return the config instance
-         */
-        public DisruptionConfig build() {
-            return new DisruptionConfigImpl(this.trigger, List.copyOf(this.disruptions), this.mode);
-        }
-    }
 }

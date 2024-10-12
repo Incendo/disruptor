@@ -3,4 +3,4 @@
 1. [x] Create core API
 2. [x] Tests :)
 3. [ ] Create Spring (AOP) integration
-4. [ ] Create Feign integration
+4. [x] Create Feign integration

@@ -23,12 +23,8 @@
 //
 package org.incendo.disruptor;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
 import org.apiguardian.api.API;
-import org.incendo.disruptor.trigger.DisruptionTrigger;
 
 /**
  * A disruptor configuration group.
@@ -45,8 +41,8 @@ public interface DisruptorGroup {
      *
      * @return a mutable builder
      */
-    static Builder builder() {
-        return new Builder();
+    static DisruptorGroupBuilder builder() {
+        return new DisruptorGroupBuilder();
     }
 
     /**
@@ -55,71 +51,4 @@ public interface DisruptorGroup {
      * @return the configurations
      */
     List<DisruptionConfig> configurations();
-
-    @API(status = API.Status.STABLE, since = "1.0.0")
-    final class Builder {
-
-        private final List<DisruptionConfig> configurations = new ArrayList<>();
-
-        private Builder() {
-        }
-
-        /**
-         * Adds the given {@code config} to the group.
-         *
-         * @param config the config
-         * @return {@code this}
-         */
-        public Builder config(final DisruptionConfig config) {
-            Objects.requireNonNull(config, "config");
-            this.configurations.add(config);
-            return this;
-        }
-
-        /**
-         * Adds the given {@code config} to the group.
-         *
-         * @param config the config
-         * @return {@code this}
-         */
-        public Builder config(final DisruptionConfig.Builder config) {
-            return this.config(config.build());
-        }
-
-        /**
-         * Adds a config to the group after letting the given {@code decorator} decorate the config builder.
-         *
-         * @param decorator the decorator
-         * @return {@code this}
-         */
-        public Builder config(final Consumer<DisruptionConfig.Builder> decorator) {
-            Objects.requireNonNull(decorator, "config");
-            final DisruptionConfig.Builder builder = DisruptionConfig.builder();
-            decorator.accept(builder);
-            return this.config(builder);
-        }
-
-        /**
-         * Adds a config to the group after letting the given {@code decorator} decorate the config builder.
-         *
-         * @param trigger the disruption trigger
-         * @param decorator the decorator
-         * @return {@code this}
-         */
-        public Builder config(final DisruptionTrigger trigger, final Consumer<DisruptionConfig.Builder> decorator) {
-            Objects.requireNonNull(decorator, "config");
-            final DisruptionConfig.Builder builder = DisruptionConfig.builder().trigger(trigger);
-            decorator.accept(builder);
-            return this.config(builder);
-        }
-
-        /**
-         * Build a new {@link DisruptorGroup} instance using {@code this} builder.
-         *
-         * @return the disruptor group instance
-         */
-        public DisruptorGroup build() {
-            return new DisruptorGroupImpl(List.copyOf(this.configurations));
-        }
-    }
 }

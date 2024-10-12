@@ -16,10 +16,12 @@ checkstyle = "10.18.2"
 slf4j = "2.0.16"
 jspecify = "1.0.0"
 apiguardian = "1.1.2"
+feign = "13.5"
 
 # test
 truth = "1.4.4"
 junit = "5.7.1"
+wiremock = "3.9.1"
 
 [libraries]
 # plugins
@@ -35,7 +37,12 @@ slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 jspecify = { group = "org.jspecify", name = "jspecify", version.ref = "jspecify" }
 apiguardian = { group = "org.apiguardian", name = "apiguardian-api", version.ref = "apiguardian" }
 
+# feign
+feign-core = { group = "io.github.openfeign", name = "feign-core", version.ref = "feign" }
+feign-java11 = { group = "io.github.openfeign", name = "feign-java11", version.ref = "feign" }
+
 # test
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
 junit-platform = { group = "org.junit.platform", name = "junit-platform-launcher" }
+wiremock = { group = "org.wiremock", name = "wiremock", version.ref = "wiremock" }

@@ -23,11 +23,7 @@
 //
 package org.incendo.disruptor;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import org.apiguardian.api.API;
 
@@ -47,8 +43,8 @@ public interface Disruptor {
      *
      * @return a mutable builder
      */
-    static Builder builder() {
-        return new Builder();
+    static DisruptorBuilder builder() {
+        return new DisruptorBuilder();
     }
 
     /**
@@ -104,6 +100,20 @@ public interface Disruptor {
         });
     }
 
+    /**
+     * Triggers the disruptions for the given {@code group} and {@code mode}.
+     *
+     * @param group disruption group to trigger
+     * @param mode mode to trigger
+     */
+    default void disrupt(final String group, final DisruptionMode mode) {
+         this.group(group).ifPresent(disruptorGroup -> this.triggerDisruptions(
+                 DisruptorContext.of(group),
+                 disruptorGroup,
+                 mode
+         ));
+    }
+
     private void triggerDisruptions(
             final DisruptorContext context,
             final DisruptorGroup group,
@@ -117,68 +127,4 @@ public interface Disruptor {
                 .forEach(disruption -> disruption.trigger(context));
     }
 
-    /**
-     * Builder for {@link Disruptor} instances. The builder should be constructed using {@link #builder()}.
-     *
-     * @since 1.0.0
-     */
-    @API(status = API.Status.STABLE, since = "1.0.0")
-    final class Builder {
-
-        private final Map<String, DisruptorGroup> groups = new HashMap<>();
-
-        private Builder() {
-        }
-
-        /**
-         * Adds the given {@code group} with the given {@code name} to the disruptor instance.
-         *
-         * @param name group name
-         * @param group group
-         * @return {@code this}
-         */
-        public Builder group(
-                final String name,
-                final DisruptorGroup group
-        ) {
-            Objects.requireNonNull(name, "name");
-            Objects.requireNonNull(group, "group");
-
-            this.groups.put(name, group);
-
-            return this;
-        }
-
-        /**
-         * Adds the disruptor group with the given {@code name} to the disruptor instance,
-         * after letting the {@code decorator} decorate the group builder.
-         *
-         * @param name group name
-         * @param decorator group decorator
-         * @return {@code this}
-         */
-        public Builder group(
-                final String name,
-                final Consumer<DisruptorGroup.Builder> decorator
-        ) {
-            Objects.requireNonNull(name, "name");
-            Objects.requireNonNull(decorator, "decorator");
-
-            final DisruptorGroup.Builder builder = DisruptorGroup.builder();
-            decorator.accept(builder);
-
-            return this.group(name, builder.build());
-        }
-
-        /**
-         * Build a new {@link Disruptor} instance using {@code this} builder.
-         *
-         * @return the disruptor instance
-         */
-        public Disruptor build() {
-            return new DisruptorImpl(
-                    Map.copyOf(this.groups)
-            );
-        }
-    }
 }

@@ -30,4 +30,4 @@ dependencyResolutionManagement {
 rootProject.name = "disruptor"
 
 include(":core")
-include(":spring")
+include(":openfeign")
