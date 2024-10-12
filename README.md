@@ -10,7 +10,7 @@ library for introducing disruptions to your code to replicate an unstable live e
 ## Modules
 
 - **core:** core disruptor API
-- ~~**spring:** spring integration~~
+- **spring:** spring integration
 - **openfeign:** feign integration
 
 ## Example
@@ -55,5 +55,28 @@ Feign.builder()/*...*/.addCapability(capability)/*...*/;
 @Bean
 Capability disruptorCapability() {
     return DisruptorCapability(disruptor, "group");
+}
+```
+
+### Spring
+
+```java
+import java.beans.BeanProperty;
+
+@Configuration
+public class YourConfig {
+
+    @Bean
+    Disruptor disruptor() {
+        return Disruptor.builder()/*...*/.build();
+    }
+}
+
+@Disrupt("group") // You may annotate a class...
+public class YourService {
+    
+    @Disrupt("other-group") //... or a method
+    public void yourMethod() {
+    }
 }
 ```

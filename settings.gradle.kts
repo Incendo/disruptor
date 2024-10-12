@@ -31,3 +31,4 @@ rootProject.name = "disruptor"
 
 include(":core")
 include(":openfeign")
+include(":spring")
