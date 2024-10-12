@@ -85,4 +85,20 @@ public interface DisruptionTrigger {
         Objects.requireNonNull(duration, "duration");
         return new LastingTrigger(duration, this);
     }
+
+    /**
+     * Returns a variant of {@code this} trigger that will limit the activations to
+     * the given {@code limit} within the given {@code period}. Once the period has passed,
+     * the recorded invocation limit will be reset to 0 and the limit will start over.
+     *
+     * <p><b>Note:</b> This should be called <i>after</i> {@link #lasting(Duration)}, never <i>before</i>.</p>
+     *
+     * @param limit maximum allowed activations during the period
+     * @param period period after which the limit is reset
+     * @return the limiting trigger
+     */
+    default DisruptionTrigger limiting(final int limit, final Duration period) {
+        Objects.requireNonNull(period, "period");
+        return new LimitingTrigger(limit, period, this);
+    }
 }
