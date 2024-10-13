@@ -13,7 +13,7 @@ tasks.named<BootJar>("bootJar") {
 }
 
 dependencies {
-    api(projects.disruptor.core)
+    api(projects.disruptor.disruptorCore)
     implementation(libs.spring.boot.autoconfigure)
 
     testImplementation(libs.spring.boot.starter.test)

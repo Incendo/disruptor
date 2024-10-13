@@ -2,6 +2,7 @@
 <h1>disruptor</h1>
 
 ![license](https://img.shields.io/github/license/incendo/disruptor.svg)
+[![central](https://img.shields.io/maven-central/v/org.incendo/disruptor-core)](https://search.maven.org/search?q=org.incendo)
 ![build](https://img.shields.io/github/actions/workflow/status/incendo/disruptor/build.yml?logo=github)
 </div>
 
@@ -13,7 +14,38 @@ library for introducing disruptions to your code to replicate an unstable live e
 - **spring:** spring integration
 - **openfeign:** feign integration
 
-## Example
+## Links
+
+- [JavaDoc (core)](https://javadoc.io/doc/org.incendo/disruptor-core/latest/index.html)
+- [JavaDoc (openfeign)](https://javadoc.io/doc/org.incendo/disruptor-openfeign/latest/index.html)
+- [JavaDoc (spring)](https://javadoc.io/doc/org.incendo/disruptor-spring/latest/index.html)
+
+## Usage
+
+### Installation
+
+**Maven**:
+
+```xml
+<dependency>
+    <groupId>org.incendo</groupId>
+    <!-- disruptor-core, disruptor-spring, disruptor-openfeign -->
+    <artifactId>disruptor-core</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+**Gradle (Kotlin)**
+
+```kotlin
+implementation("org.incendo:disruptor-core:1.0.0")
+```
+
+**Gradle (Groovy)**
+
+```groovy
+implementation 'org.incendo:disruptor-core:1.0.0'
+```
 
 ### Pure Java
 

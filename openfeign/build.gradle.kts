@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.disruptor.core)
+    api(projects.disruptor.disruptorCore)
     api(libs.feign.core)
 
     testImplementation(libs.wiremock)

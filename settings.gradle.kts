@@ -30,5 +30,10 @@ dependencyResolutionManagement {
 rootProject.name = "disruptor"
 
 include(":core")
+findProject(":core")?.name = "disruptor-core"
+
 include(":openfeign")
+findProject(":openfeign")?.name = "disruptor-openfeign"
+
 include(":spring")
+findProject(":spring")?.name = "disruptor-spring"
